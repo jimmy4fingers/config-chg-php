@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 namespace App\parser;
 
+use App\adapter\Yaml;
 use App\exception\InvalidFileException;
 use App\exception\MissingFileException;
 
-class JsonFileParser extends AbstractParser implements ParserInterface
+class YamlFileParser extends AbstractParser implements ParserInterface
 {
+    private Yaml $parser;
+
+    public function __construct(Yaml $parser)
+    {
+        $this->parser = $parser;
+    }
+
     /**
      * @param string $filePath
      * @return array
@@ -19,7 +27,7 @@ class JsonFileParser extends AbstractParser implements ParserInterface
     {
         $this->validateFileExists($filePath);
 
-        $parsedData = json_decode(file_get_contents($filePath), true);
+        $parsedData = $this->parser->parseFile($filePath);
 
         if ($parsedData === null) {
             $this->throwInvalidFileException();
