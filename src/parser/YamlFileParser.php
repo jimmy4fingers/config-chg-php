@@ -10,8 +10,13 @@ use App\exception\MissingFileException;
 
 class YamlFileParser extends AbstractParser implements ParserInterface
 {
+    /** @var Yaml  */
     private Yaml $parser;
 
+    /**
+     * YamlFileParser constructor.
+     * @param Yaml $parser
+     */
     public function __construct(Yaml $parser)
     {
         $this->parser = $parser;
