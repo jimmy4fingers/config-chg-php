@@ -14,7 +14,8 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.2"
+        "phpunit/phpunit": "^9.2",
+        "squizlabs/php_codesniffer": "*"
     },
     "config": {
         "bin-dir": "bin/"
