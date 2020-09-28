@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+
+  service:
+    build:
+      context: .
+    container_name: divido-service
+    volumes:
+      - '.:/var/www/html'

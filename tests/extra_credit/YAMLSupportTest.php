@@ -2,7 +2,11 @@
 
 namespace App\Tests\ExtraCredit;
 
+use App\adapter\Yaml;
 use App\Config;
+use App\exception\InvalidFileException;
+use App\exception\MissingFileException;
+use App\parser\YamlFileParser;
 use PHPUnit\Framework\TestCase;
 
 class YAMLSupportTest extends TestCase
@@ -16,15 +20,13 @@ class YAMLSupportTest extends TestCase
     {
         parent::setUp();
 
-        $this->config = new Config(dirname(__DIR__));
+        $this->config = new Config(dirname(__DIR__), new YamlFileParser(new Yaml()));
     }
 
     // Loading single file
 
     public function test_SingleYAMLFile_CanBeLoadedCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->config->load('fixtures/config.yml');
 
         $result = $this->config->getAll();
@@ -40,8 +42,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_SingleYAMLFile_WhenMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.missing.yml');
@@ -49,8 +49,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_SingleYAMLFile_WhenInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.invalid.yml');
@@ -60,8 +58,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleArguments_CanBeLoadedCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->config->load('fixtures/config.yml', 'fixtures/config.extra.yml');
 
         $result = $this->config->getAll();
@@ -78,8 +74,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleMethods_CanBeLoadedCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->config->load('fixtures/config.yml');
         $this->config->load('fixtures/config.extra.yml');
 
@@ -97,8 +91,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleArguments_WhenOneFileIsMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.yml', 'fixtures/config.missing.yml');
@@ -106,8 +98,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleArguments_WhenOneFileIsInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.yml', 'fixtures/config.invalid.yml');
@@ -115,8 +105,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleArguments_WhenAllFilesAreMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.missing.yml', 'fixtures/config.also_missing.yml');
@@ -124,8 +112,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleArguments_WhenAllFilesAreInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.invalid.yml', 'fixtures/config.also_invalid.yml');
@@ -133,8 +119,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleMethods_WhenOneFileIsMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.yml');
@@ -143,8 +127,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleMethods_WhenOneFileIsInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.yml');
@@ -153,8 +135,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleMethods_WhenAllFilesAreMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.missing.yml');
@@ -163,8 +143,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesOfSameFormat_AsMultipleMethods_WhenAllFilesAreInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.invalid.yml');
@@ -175,8 +153,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleArguments_CanBeLoadedCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->config->load('fixtures/config.yml', 'fixtures/config.json');
 
         $result = $this->config->getAll();
@@ -205,8 +181,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleMethods_CanBeLoadedCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->config->load('fixtures/config.yml');
         $this->config->load('fixtures/config.json');
 
@@ -236,8 +210,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleArguments_WhenOneFileIsMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.yml', 'fixtures/config.missing.json');
@@ -245,8 +217,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleArguments_WhenOneFileIsInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.json', 'fixtures/config.invalid.yml');
@@ -254,8 +224,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleArguments_WhenAllFilesAreMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.missing.yml', 'fixtures/config.also_missing.json');
@@ -263,8 +231,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleArguments_WhenAllFilesAreInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.invalid.yml', 'fixtures/config.also_invalid.json');
@@ -272,8 +238,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleMethods_WhenOneFileIsMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.yml');
@@ -282,8 +246,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleMethods_WhenOneFileIsInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.yml');
@@ -292,8 +254,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleMethods_WhenAllFilesAreMissing_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(MissingFileException::class);
 
         $this->config->load('fixtures/config.missing.yml');
@@ -302,8 +262,6 @@ class YAMLSupportTest extends TestCase
 
     public function test_MultipleFilesWithMultipleFormats_AsMultipleMethods_WhenAllFilesAreInvalid_ErrorsCorrectly(): void
     {
-        $this->markTestSkipped();
-
         $this->expectException(InvalidFileException::class);
 
         $this->config->load('fixtures/config.invalid.yml');
